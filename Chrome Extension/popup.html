@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<!--
+		TeX Sharing: A Google Chrome Extension
+		Created By: Marcus Mo
+		@marcus_mo
+	-->
+	<style>
+		body { min-width: 357px; overflow-x: hidden; text-align: center; font: 12px black Helvetica, Arial, "sans serif"; }
+		img { border: 0; }
+		#tex { display: block; width: 100%; height: 100px; }
+		#target, #copy_container { display: none; width: 100%; }
+		#target { margin-top: 10px; }
+		#URL { width: 100%; margin-top: 13px; padding: 3px; }
+		#copy { width: 100%; cursor: pointer; font-size: 10px; }
+	</style>
+
+	<script>
+		function generate() {
+			var tex, url, img, target, path, not;
+		
+			// Collect form data and encode
+			tex = document.getElementById("tex").value;
+		
+			// Generate Google Chart url
+			url = "http://chart.apis.google.com/chart?"
+				+ "cht=tx&"
+				+ "chl=" + encodeURIComponent(tex);
+		
+			// Wrap in img tags
+			img = "<img id='texImg'"
+				+ "src='" + url + "' "
+				+ "alt='" + tex + "' "
+				+ "/>";
+			
+			// Update content in #target, #URL & #copy
+			document.getElementById("target").innerHTML = img;
+			document.getElementById("URL").value        = url;
+			document.getElementById("copy").innerHTML   = "Click here to copy the URL";
+
+			// Change CSS display attribute on required elements
+			document.getElementById("target").style.display         = "block";
+			document.getElementById("copy_container").style.display = "block";
+				
+			// Disable default form actions
+			return false;
+		}
+	
+		function createElem(el, id) {
+			var elem = document.createElement(el);
+			elem.id = id;
+			document.body.appendChild(elem);
+		}
+		
+		function copy() {
+			document.getElementById("copy").addEventListener("click", function() {
+				document.getElementById("URL").select();
+				document.execCommand("copy", false, null);
+				this.innerHTML = "URL copied to clipboard";
+			}, false);
+		}
+	</script>
+</head>
+
+<body onLoad="copy()">
+	<p>Type TeX in the area below and hit Submit when you are ready!</p>
+	<form>
+		<textarea id="tex"></textarea>
+		<input type="button" onClick="generate()" value="Generate" />
+	</form>
+	<div id="target"></div>
+	<div id="copy_container">
+		<input type="text" id="URL" />
+		<span id="copy">Click here to copy the URL</span>
+	</div>
+	
+	<script>
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-4707505-7']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = 'https://ssl.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</body>
+</html>
